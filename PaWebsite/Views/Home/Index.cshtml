@@ -1,0 +1,40 @@
+﻿@model IEnumerable<PA.Data.Models.PAX.Category>
+@using PaWebsite.Resources
+@{
+    ViewBag.Title = "";
+}
+
+<div class="@*submenu submenu1 mega-menu*@" style="display:block !important;">
+    <div class="row">
+
+        @foreach (var cat in Model.Where(x => x.ParentID == 0))
+        {
+            <div class="widget-custom-menu col-xs-12 col-sm-12 col-md-3">
+                <h5 class="title widgettitle"><a href="@Url.Action("cat", new { lang = ViewContext.RouteData.Values["lang"], id = cat.CategoryID })"> @cat.Name</a></h5>
+                @foreach (var item in Model.Where(x => x.ParentID == cat.CategoryID).ToList())
+                {
+                    @*<ul>
+                            <li><a href='@Url.Action("cat", new { lang = ViewContext.RouteData.Values["lang"], id = item.CategoryID })'>@item.Name</a></li>
+                        </ul>*@
+
+                    <a href='@Url.Action("cat", new { lang = ViewContext.RouteData.Values["lang"], id = item.CategoryID })' style="margin-right:7px">@item.Name</a>
+                }
+            </div>
+        }
+
+
+        @*<div class="widget-custom-menu col-xs-12 col-sm-12 col-md-3" style="padding-bottom:0px !important;">
+            <h5 class="title widgettitle"><a href="@Url.Action("cats", new { lang = ViewContext.RouteData.Values["lang"] })"> @Resurs.AllCategories</a></h5>
+
+            
+
+        </div>*@
+
+        <div class="widget-custom-menu col-xs-12 col-sm-12 col-md-3">
+            <h5 class="title widgettitle"><a class="btn btn-danger" href="@Url.Action("cats", new { lang = ViewContext.RouteData.Values["lang"] })"> @Resurs.AllCategories <i class="fa fa-angle-double-right" aria-hidden="true"></i></a></h5>
+            </div>
+
+            @*<a style="float:left;" href="@Url.Action("cats")" class="btn btn-primary">@Resurs.AllCategories >></a>*@
+
+        </div>
+</div>

@@ -1,0 +1,109 @@
+﻿@using PaWebsite.Resources
+@using PA.Data.Models.PAX
+
+@{
+    int currentPage = (int)ViewBag.Pagination_CurentPage;
+    int countOnPage = (int)ViewBag.Pagination_CountOnPage;
+    int count = (int)ViewBag.Pagination_Count;
+    int pageCount = (int)Math.Ceiling((double)count / (double)countOnPage);
+
+    int prevPage = currentPage - 1;
+    int nextPage = currentPage + 1;
+
+    string queryString = string.IsNullOrEmpty(Request.Url.Query) ? "" : "&" + Request.Url.Query.Substring(1);
+}
+
+@*if more that 1 page exists*@
+@if (count > countOnPage)
+{
+
+    <div class="pagination">
+        <div style="width:100%;padding-bottom:5px;height:40px">
+            <ul class="list-page">
+                @*if first page*@
+                @if (currentPage != 1)
+                {
+                    <li>
+                        <a href="@Url.Action("cat", new { lang = ViewContext.RouteData.Values["lang"], page = currentPage - 1 })@queryString" class="nav-button">
+                            &lt;
+                            @Resurs.Previous
+                        </a>
+                    </li>
+                }
+
+                @*if last page*@
+                @if (count > currentPage * countOnPage - countOnPage)
+                {
+                    <li style="float:right"><a href="@Url.Action("cat", new { lang = ViewContext.RouteData.Values["lang"], page = currentPage + 1 })@queryString" class="nav-button">@Resurs.Next &gt;</a></li>
+                }
+                
+
+                @if (1 == currentPage)
+                {
+                    <li><a class="page-number current">1</a></li>
+                }
+                else
+                {
+                    <li><a href="@Url.Action("cat", new { lang = ViewContext.RouteData.Values["lang"], page = 1 })@queryString" class="page-number">1</a></li>
+                }
+
+                @if (pageCount >= 15 && currentPage >= 8)
+                {
+                    <li><a class="page-number">...</a></li>
+                }
+
+                @for (int i = 2; i < pageCount; i++)
+                {
+                    if (pageCount >= 15 && currentPage < 8 && i >= 9)
+                    {
+                        if (i == 9)
+                        {
+                            <li><a class="page-number">...</a></li>
+                        }
+                        continue;
+                    }
+
+                    if (pageCount >= 15 && currentPage >= 8 && currentPage == i - 4)
+                    {
+                        <li><a class="page-number">...</a></li>
+                        continue;
+                    }
+
+                    if (pageCount >= 15 && currentPage >= 8 && (currentPage > i + 3 || currentPage < i - 3))
+                    {
+                        continue;
+                    }
+
+
+
+                    if (i == currentPage)
+                    {
+                        <li><a class="page-number current">@i</a></li>
+                    }
+                    else
+                    {
+                        <li><a href="@Url.Action("cat", new { lang = ViewContext.RouteData.Values["lang"], page = i })@queryString" class="page-number">@i</a></li>
+                    }
+                }
+
+
+                @if (pageCount == currentPage)
+                {
+                    <li><a class="page-number current">@pageCount</a></li>
+                }
+                else
+                {
+                    <li><a href="@Url.Action("cat", new { lang = ViewContext.RouteData.Values["lang"], page = pageCount })@queryString" class="page-number">@pageCount</a></li>
+                }
+
+            </ul>
+        </div>
+
+        @*<ul class="list-page">
+
+           
+
+        </ul>*@
+    </div>
+
+}

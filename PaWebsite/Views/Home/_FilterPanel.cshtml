@@ -1,0 +1,99 @@
+﻿@using PaWebsite.Resources;
+@using PA.Data.Models.PAX;
+
+@{
+    var db = new ModelPAX();
+    
+    string priceFrom = "";
+    string priceTo = "";
+    
+    if (!string.IsNullOrEmpty(Request.QueryString["priceFrom"]))
+    {
+        priceFrom = Request.QueryString["priceFrom"];
+    }
+
+    if (!string.IsNullOrEmpty(Request.QueryString["priceTo"]))
+    {
+        priceTo = Request.QueryString["priceTo"];
+    }
+    
+}
+
+
+<style type="text/css">
+    .inp-price-filter {
+        width: 80px;
+    }
+
+    .tbl_price_filter tr td {
+        padding-left: 5px;
+        vertical-align: middle;
+    }
+</style>
+
+
+<div class="col-xs-12 col-sm-5 col-md-4 col-lg-3 sidebar">
+    @*@if (ViewBag.MinPrice != ViewBag.MaxPrice)
+    {*@
+
+        <div class="widget widget_filter_price box-has-content">
+            <h3 class="widgettitle">@Resurs.FilterByPrice</h3>
+            <div class="price-filter">
+
+                <table class="tbl_price_filter">
+                    <tr>
+                        <td>
+                            <input type="text" id="inpPriceFrom" value="@priceFrom" data-min="@ViewBag.MinPrice" data-max="@ViewBag.MaxPrice" class="form-control inp-price-filter" />
+                        </td>
+                        <td style="width:10px;">
+                            <i class="manat">M</i>
+                        </td>
+                        <td>
+                            -
+                        </td>
+                        <td>
+                            <input type="text" id="inpPriceTo" value="@priceTo" data-min="@ViewBag.MinPrice" data-max="@ViewBag.MaxPrice" class="form-control inp-price-filter" />
+                        </td>
+                        <td style="width:10px;">
+                            <i class="manat">M</i>
+                        </td>
+                    </tr>
+                </table>
+
+            </div>
+        </div>
+
+    @*}*@
+    
+    @if (ViewBag.Brands.Count > 1)
+    {
+        <div class="widget widget_filter_color box-has-content" id="dvBrands">
+            <h5 class="widgettitle">@Resurs.Brand</h5>
+            @*<ul class="list-categories">*@
+            <ul class="list-color">
+                @foreach (Brand item in ViewBag.Brands)
+                {
+                    <li class="chc">
+                        <input type="checkbox" id="@("br"+item.ID)" data-property-name="brand" data-property-value="@item.ID" @(((List<int>)ViewBag.SelectedBrands).Contains(item.ID) ? "checked" : "")>
+                        <label for="@("br"+item.ID)" class="label-text">@item.Name</label>
+                    </li>
+                }
+            </ul>
+        </div>
+    }
+    @if (ViewBag.Colors.Count > 1)
+    {
+        <div class="widget widget_filter_color box-has-content">
+            <h3 class="widgettitle">@Resurs.Color</h3>
+            <ul class="list-color">
+                @foreach (var color in ViewBag.Colors)
+                {
+                    <li>
+                        <input type="checkbox" id="@("color"+color.ColorID)" data-property-name="color" data-property-value="@color.ColorID" @(((List<int>)ViewBag.SelectedColors).Contains(color.ColorID) ? "checked" : "")>
+                        <label for="@("color"+color.ColorID)" class="label-text">@color.Name</label>
+                    </li>
+                }
+            </ul>
+        </div>
+    }
+</div>

@@ -1,0 +1,13 @@
+﻿@using PA.Data.Models.PAX
+
+@{
+    List<Category> cats = cats = ((List<Category>)ViewBag.Global_Categories).Where(x => x.ParentID == 0).OrderBy(x => x.OrderNo).ToList();
+}
+
+@foreach (var category in cats)
+{
+    <h3>@category.Name</h3>
+    
+    var childCategories = ((List<Category>)ViewBag.Global_Categories).Where(x => x.ParentID == category.CategoryID).OrderBy(x => x.OrderNo).ToList();
+    Html.RenderPartial("_AllCategories", childCategories);
+}

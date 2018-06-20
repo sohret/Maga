@@ -1,0 +1,25 @@
+﻿@using PaWebsite.Resources;
+@using PA.Data.Models.PAX;
+@model Product
+
+@{
+    var product = (Product)ViewBag.Product;
+}
+
+
+
+
+<table>
+    <tr>
+        @foreach (AdsBoardSite adsSite in (List<AdsBoardSite>)ViewBag.Global_AdsBoardSite)
+        {
+            var adsCategory = ((List<AdsBoardSiteCategory>)ViewBag.Global_AdsBoardSiteCategory).Where(x => x.AdsBoardSiteID == adsSite.ID && x.CategoryID == product.CategoryID).FirstOrDefault();
+
+            if (adsCategory != null)
+            {
+                <td style="padding-left:20px"><a target="_blank" href="@Url.Action("go", new { lang = ViewContext.RouteData.Values["lang"], id = product.ID, adsId = adsSite.ID })">@adsSite.Name</a></td>
+            }
+        }
+        
+    </tr>
+</table>

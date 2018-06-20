@@ -1,0 +1,436 @@
+﻿@using PaWebsite.Resources
+@using PA.Data.Models.PAX;
+
+<!DOCTYPE html>
+<html lang="@ViewBag.Lang">
+<head>
+    <script>
+        var _url = '';
+    </script>
+    <!-- Global Site Tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-107061971-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments) };
+        gtag('js', new Date());
+
+        gtag('config', 'UA-107061971-1');
+    </script>
+
+    <link rel="alternate" href="http://maga.az/az" hreflang="az" />
+    <link rel="alternate" href="http://maga.az/ru" hreflang="ru" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Maga.az @ViewBag.Title</title>
+    <script type="text/javascript" src="/Content/js/jquery-2.1.4.min.js"></script>
+    <link href="/Content/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="/Content/css/owl.carousel.min.css" rel="stylesheet" type="text/css">
+    <link href="/Content/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="/Content/css/animate.min.css" rel="stylesheet">
+    <link href="/Content/css/magnific-popup.min.css" rel="stylesheet">
+    <link href="/Content/css/jquery-ui.min.css" rel="stylesheet">
+    <link href="/Content/css/jquery.scrollbar.min.css" rel="stylesheet">
+    <link href="/Content/css/chosen.min.css" rel="stylesheet">
+    <link href="/Content/css/style.css" rel="stylesheet">
+    <link href="/Content/css/customs-css.css" rel="stylesheet">
+    @*<link href="/Content/css/font-awesome.min.css" rel="stylesheet" />*@
+    <link href="/Content/css/breadcrumb.css" rel="stylesheet" />
+    <link href="/Content/css/site.css" rel="stylesheet" />
+    <link rel="shortcut icon" href="/Content/images/icon-aggregator-32.png" />
+
+    <link href="/Content/css/auto-complete.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.rawgit.com/yahoo/pure-release/v0.6.0/pure-min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet">
+    @RenderSection("style", false)
+
+</head>
+<body>
+    <div class="special-container">
+        <!--Header-->
+        <header>
+            <div class="header layout1 no-prepend-box-sticky">
+                @*@{Html.RenderPartial("_Language");}*@
+                @{Html.RenderPartial("_Header");}
+            </div>
+
+            @*<div class="header layout2 no-prepend-box-sticky">
+                    <div class="row"></div>
+                </div>*@
+            <script>
+                var positionY = 0;
+            </script>
+
+        </header>
+        <!--/Header-->
+        <!--Content-->
+        @RenderBody()
+        <!--/Content-->
+
+
+
+
+        <style type="text/css">
+            li {
+                position: relative;
+            }
+
+
+            .filter_result {
+                display: none;
+                position: absolute;
+                left: 270px;
+                height: 37px;
+                width: 300px;
+                vertical-align: middle;
+                padding: 5px 0px 5px 30px;
+                /*border: 1px solid #963;*/
+                /*background-color: rgb(229, 83, 76);*/
+                /*color: #ffffff;*/
+                background: url(/Content/images/l_plash.png) no-repeat;
+                z-index: 999;
+                margin: 0px;
+                zoom: 1;
+            }
+        </style>
+
+        <div id="dvFilterResult" class="filter_result">
+            @Resurs.FilterResult1 <span id="result_count"></span> @Resurs.FilterResult2
+            <a href="#" style="text-decoration:underline;" id="lnkFilter">@Resurs.FilterResultLink  <i class="fa fa-angle-double-right" aria-hidden="true"></i></a>
+        </div>
+
+    </div>
+    <!--Footer-->
+    @*<footer>
+            <div class="footer layout1 ">
+                <div class="container">
+                    @{Html.RenderPartial("_Footer");}
+                </div>
+            </div>
+        </footer>*@
+    <!--/Footer-->
+    <a class="back-to-top" href=""></a>
+
+
+    <script type="text/javascript" src="/Content/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/Content/js/owl.carousel.min.js"></script>
+    <script type="text/javascript" src="/Content/js/owl.thumbs.min.js"></script>
+    <script type="text/javascript" src="/Content/js/magnific-popup.min.js"></script>
+    <script type="text/javascript" src="/Content/js/mobilemenu.min.js"></script>
+    <script type="text/javascript" src="/Content/js/jquery.plugin-countdown.min.js"></script>
+    <script type="text/javascript" src="/Content/js/jquery-countdown.min.js"></script>
+    <script type="text/javascript" src="/Content/js/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="/Content/js/jquery.scrollbar.min.js"></script>
+    <script type="text/javascript" src="/Content/js/chosen.min.js"></script>
+    <script type="text/javascript" src="/Content/js/frontend.js"></script>
+    <script type="text/javascript" src="/Content/js/URI.js"></script>
+    <script src="/Scripts/jquery.cookie.js"></script>
+
+
+
+    @RenderSection("script", false)
+    <script src="/Scripts/auto-complete.js"></script>
+
+    <script>
+
+
+        var k = new autoComplete({
+            selector: '#inpSearch',
+            source: function (term, response) {
+                $.getJSON('@Url.Action("FillCategory", "Home", new { culture = Culture, })', { q: term, text: $('#inpSearch').val(), rootCategoryID: $('#cmbCategories').val() }, function (data) { console.log(data); response(data); });
+            }
+        });
+
+
+
+
+        //animate text maga.az to magaza
+
+        $(document).ready(function () {
+            setInterval('AnimateText()', 2000);
+        });
+
+        var s = 1;
+        //var m = '';
+        function AnimateText() {
+            s *= -1;
+
+            $('.h4_logo').animate('slow', function () {
+                if (s < 0) {
+                    $('#h1').css('display', 'block');
+                    $('#h2').css('display', 'none');
+                }
+                else {
+                    $('#h1').css('display', 'none');
+                    $('#h2').css('display', 'block');
+                }
+            });
+        }
+
+
+
+        $('.lnk_prod').click(function () {
+            url = $(this).data('prod-link');
+            window.open(url, "_blank");
+        });
+
+
+        $("#order").change(function () {
+            var uri = new URI();
+            uri.setSearch("order", $("#order").val());
+            location.href = uri.href();
+        });
+
+
+        $("body").click(function (event) {
+            positionY = event.clientY;
+        });
+
+
+        $(document).ready(function () {
+
+            //Müqayisə edilmiş məhsullar. cookie saxlanmışdır.
+            //CountCompareProduct();
+
+            //Clear compare cookies
+            ClearCompare();
+
+            $(document).find('input').each(function (index, el) {
+                //console.log(el.nodeName + ': ' + el.nodeType);
+                if (el.nodeName == 'INPUT') {
+                    el.addEventListener('onkeyup', GetFilterResult);
+                    if (el.type == 'checkbox') {
+                        el.addEventListener('change', GetFilterResult);
+                    }
+                }
+
+                //if (el.nodeName == 'input') {
+                //if (el.nodeType == 'checkbox') {
+                //    el.addEventListener('checked', GetFilterResult);
+                //}
+                //if (el.nodeType == 'text') {
+                //    el.addEventListener('change', GetFilterResult);
+                //}
+                //}
+            });
+        });
+
+        function GetFilterResult() {
+
+            // $('input[type=checkbox]').click(function (e) {
+
+            //var bodyRect = document.body.getBoundingClientRect();
+            //var elemRect = this.getBoundingClientRect();
+            // console.log(e.pageY + ' : ' + bodyRect.top + ' : ' + elemRect.top);
+            //var top = (e.pageY - elemRect.top) + 'px';
+            //console.log(window.scrollY + ':' + e.clientY);
+            var top = (window.scrollY + positionY - 18) + 'px';
+            var left = Number($('.special-container').css('margin-left').replace('px', '')) + Number($('.col-xs-12.col-sm-5.col-md-4.col-lg-3.sidebar').css('width').replace('px', ''));
+            console.log(left);
+            $('#dvFilterResult').css({ 'display': 'block', 'top': top, 'left': left + 'px' });
+
+            var priceFrom = $('#inpPriceFrom').val();
+            var priceTo = $('#inpPriceTo').val();
+
+            var property_name = '';
+            var filterUrl = '';
+            $('input[type=checkbox]:checked').each(function (index) {
+                if (property_name == $(this).data('property-name')) {
+                    filterUrl += ';' + $(this).data('property-value');
+                }
+                else {
+                    if (index > 0) {
+                        //filterUrl = filterUrl.substring(0, filterUrl.length - 1);
+                        filterUrl += '&' + $(this).data('property-name') + '=';
+                        filterUrl += $(this).data('property-value');
+                    } else {
+                        //filterUrl = filterUrl.substring(0, filterUrl.length - 1);
+                        filterUrl += $(this).data('property-name') + '=';
+                        filterUrl += $(this).data('property-value');
+                    }
+                }
+                property_name = $(this).data('property-name');
+            });
+
+            var uri = new URI();
+            uri = new URI(uri.href().split('?')[0]);
+            uri.setSearch("order", $("#order").val());
+            var url = uri.href();
+            filterUrl += '&pricefrom=' + priceFrom + '&priceto=' + priceTo;
+            url = url + '&' + filterUrl;
+            @{ var catId = HttpContext.Current.Request.RequestContext.RouteData.Values["id"]; }
+
+            $.get('@(catId==null ? " " : Url.Action("TestFilter", "Home", new { lang = ViewContext.RouteData.Values["lang"], id =catId  }))', filterUrl, function (resp) {
+                $('#result_count').html(resp);
+
+                if (resp == 0 || resp == '0') {
+                    $('#lnkFilter').css('display', 'none');
+                } else {
+                    $('#lnkFilter').css('display', 'inline');
+                }
+
+                $('#lnkFilter').attr('href', url);
+            });
+
+
+
+            // });
+        }
+
+
+
+
+
+        $('.inp-price-filter').on('keyup', function () {
+            //setTimeout(function () {
+            //if ($(this).val() < $(this).data('min')) {
+            //    $(this).val($(this).data('min'));
+            //}
+
+            //if ($(this).val() > $(this).data('max')) {
+            //    $(this).val($(this).data('max'));
+            //}
+
+            //if ($(this).attr('id') == 'inpPriceFrom') {
+            //    console.log($('#inpPriceTo').val());
+            //    if ($('#inpPriceTo').val() != undefined && $('#inpPriceTo').val() != '' && $('#inpPriceFrom').val() > $('#inpPriceTo').val()) {
+            //        $('#inpPriceFrom').val($('#inpPriceTo').val());
+            //    }
+            //} else {
+            //    if ($('#inpPriceTo').val() != undefined && $('#inpPriceTo').val() != null && $('#inpPriceFrom').val() > $('#inpPriceTo').val()) {
+            //        $('#inpPriceTo').val($('#inpPriceFrom').val());
+            //    }
+            //}
+
+
+
+            //if ($('#inpPriceTo').val() < $('#inpPriceFrom').val()) {
+            //    $('#inpPriceTo').val($('#inpPriceFrom').val());
+            //}
+
+            var priceFrom = $('#inpPriceFrom').val();
+            var priceTo = $('#inpPriceTo').val();
+
+
+            // var uri = new URI();
+            //uri.addSearch()
+            //uri.addQuery('priceFrom', $('#inpPriceFrom').val());
+            //uri.addQuery('priceTo', $('#inpPriceTo').val());
+
+            //uri.setSearch('priceFrom', $('#inpPriceFrom').val());
+            //uri.setSearch('priceTo', $('#inpPriceTo').val());
+
+            ////uri.search();
+            //_url = uri.href();
+
+            GetFilterResult();
+
+            //}, 800);
+        });
+
+        var prodIds = [];
+        if ($.cookie('compare') != undefined) {
+                prodIds.push($.cookie('compare'));
+            }
+        $('.compare-button').click(function () {
+            console.log($.cookie('compare'));
+
+
+            //var ck = $.cookie('compare');
+            var prodID = $(this).data('product-id'); // + ';';
+
+            if (prodIds.includes(prodID)) {
+                prodIds.splice(prodIds.indexOf(prodID), 1);
+                RemoveFromCompare(prodID, this);
+            } else {
+                prodIds.push(prodID);
+                AddToCompare(prodID, this);
+            }
+
+            $.cookie('compare', prodIds);
+
+            //console.log($.cookie('compare'));
+
+            //if (ck == undefined) {
+            //    AddToCompare(prodID, this);
+            //} else if (ck.includes(prodID)) {
+            //    RemoveFromCompare(prodID, this);
+            //} else {
+            //    AddToCompare(prodID, this);
+            //}
+            CountCompareProduct();
+        });
+
+        function AddToCompare(productID, el) {
+            $(el).find('.icon').css('color', '#00ff00');  /*.addClass('comp');*/
+           // var ck = $.cookie('compare');
+            //ck += productID;
+            //$.cookie('compare', ck);
+            CountCompareProduct();
+        }
+
+        function RemoveFromCompare(productID, el) {
+            $(el).removeClass('comp');
+            $(el).find('.icon').css('color', '#d9534f');
+            //var ck = $.cookie('compare');
+           // ck = ck.replace(productID, '');
+           // $.cookie('compare', ck);
+            CountCompareProduct();
+        }
+
+        function CountCompareProduct() {
+            //prodIds = $.cookie('compare'); //.split(',');
+            //var ck = $.cookie('compare');
+            //var arr = ck.toString().split(';');
+            var count = prodIds.length;
+            $('#comp-count').html(' (' + count + ')');
+
+            //var url = new URI(); //URI($('#lnkComp').attr('href'));
+            //var host = url.host;
+            //var path = '/ViewBag.Lang/comp/';
+
+            var newUrl = new URI('@Url.Action("comp", new { lang = ViewContext.RouteData.Values["lang"]})');
+            var query = '';
+            for (var i = 0; i < prodIds.length; i++) {
+                query += prodIds[i] + ';';
+            }
+            newUrl.addQuery('compare',query);
+            //console.log(host);
+            //console.log(path);
+            //console.log(newUrl);
+            //url.addQuery('compare', ck);
+            $('#lnkComp').attr('href', newUrl);
+
+        }
+
+        function ClearCompare() {
+            $.cookie('compare', '');
+            prodIds.pop();
+            CountCompareProduct();
+        }
+
+
+    </script>
+
+
+
+    <script type="text/javascript">
+        var reformalOptions = {
+            project_id: 979318,
+            project_host: "magaza.reformal.ru",
+            tab_orientation: "left",
+            tab_indent: "50%",
+            tab_bg_color: "#eb4141",
+            tab_border_color: "#ffffff",
+            tab_image_url: "http://maga.az/content/images/reformal.@(ViewBag.Lang).png",
+            tab_border_width: 2
+        };
+
+        (function () {
+            var script = document.createElement('script');
+            script.type = 'text/javascript'; script.async = true;
+            script.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'media.reformal.ru/widgets/v3/reformal.js';
+            document.getElementsByTagName('head')[0].appendChild(script);
+        })();
+    </script><noscript><a href="http://reformal.ru"><img src="http://media.reformal.ru/reformal.png" /></a><a href="http://magaza.reformal.ru">Oтзывы и предложения для Maga</a></noscript>
+</body>
+</html>

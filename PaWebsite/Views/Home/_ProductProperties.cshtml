@@ -1,0 +1,126 @@
+﻿@using PaWebsite.Resources;
+@using PA.Data.Models.PAX;
+@model Product
+
+@{
+    var db = new ModelPAX();
+
+    var product = Model;
+    var productProperties = db.ProductProperty.Where(x => x.ProductID == product.ID).ToList();
+    var productPropertyIDs = productProperties.Select(x => x.ID).ToList();
+    var propertyIDs = productProperties.Select(x => x.PropertyID).ToList();
+    var properties = ((List<Property>)ViewBag.Global_Properties).Where(x => propertyIDs.Contains(x.PropertyID)).ToList();
+    var productPropertyValues = db.ProductPropertyValue.Where(x => productPropertyIDs.Contains(x.ProductPropertyID)).ToList();
+    var valueIDs = productPropertyValues.Select(x => x.ValueID).ToList();
+    var propertyValues = ((List<PropertyValue>)ViewBag.Global_PropertyValues).Where(x => valueIDs.Contains(x.ValueID)).ToList();
+}
+
+<style type="text/css">
+    .tbl_prd {        
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-size: medium;
+        width: 100%;
+        /*right: 10px;*/
+        vertical-align: middle;
+    }
+
+    .tbl_prod tr td {
+        padding-left: 5px;
+    }
+
+    .tbl_prod tr {
+        border-bottom: 1px dashed #f5ecec;
+    }
+
+        .tbl_prod tr:hover, .a_prod_link {
+            background-color: #e5534c;
+            color: #ffffff;
+        }
+
+    .a_prod_link {
+        display: normal;
+        border: 0px !important;
+        padding: 0px !important;
+        margin: 0px !important;
+        display: inherit !important;
+        background-color: transparent !important;
+    }
+
+        .a_prod_link:hover {
+            display: inherit !important;
+            color: #ffffff;
+            /* background-color:#e5534c !important;*/
+        }
+
+    .inner {
+        padding-top: 0px !important;
+        vertical-align: middle !important;
+        top: auto !important;
+        bottom: auto !important;
+    }
+
+    .lnk_prd {
+        cursor: pointer;
+    }
+
+    /*.lnk_prd td {
+            padding-left: 10px;
+        }*/
+</style>
+
+<table class="tbl_product">
+
+    @* without group *@
+    @{
+        foreach (var productProperty in productProperties.Where(x => x.GroupID == null))
+        {
+            <tr class="lnk_prd">
+                <td style="text-align:left;">@properties.First(x => x.PropertyID == productProperty.PropertyID).Name</td>
+                <td style="width:50px;"></td>
+                <td>
+                    <table class="tbl_product">
+                        @foreach (var productPropertyValue in productPropertyValues.Where(x => x.ProductPropertyID == productProperty.ID))
+                        {
+                            <tr class="lnk_prd">
+                                <td>@propertyValues.First(x => x.ValueID == productPropertyValue.ValueID).Name</td>
+                            </tr>
+                        }
+                    </table>
+                </td>
+            </tr>
+        }
+    }
+
+
+    @* with group *@
+    @{
+        int groupId = -1;
+        foreach (var productProperty in productProperties.Where(x => x.GroupID != null).OrderBy(x => x.GroupID))
+        {
+            if (groupId != productProperty.GroupID)
+            {
+                string groupName = ((List<PropertyGroup>)ViewBag.Global_PropertyGroups).First(x => x.GroupID == productProperty.GroupID).Name;
+                <tr class="lnk_prd">
+                    <td><b>@groupName</b></td>
+                </tr>
+
+                groupId = (int)productProperty.GroupID;
+            }
+
+            <tr class="lnk_prd">
+                <td>@properties.First(x => x.PropertyID == productProperty.PropertyID).Name</td>
+                <td style="width:50px;"></td>
+                <td>
+                    <table class="tbl_prod">
+                        @foreach (var productPropertyValue in productPropertyValues.Where(x => x.ProductPropertyID == productProperty.ID))
+                        {
+                            <tr class="lnk_prd">
+                                <td>@propertyValues.First(x => x.ValueID == productPropertyValue.ValueID).Name</td>
+                            </tr>
+                        }
+                    </table>
+                </td>
+            </tr>
+        }
+    }
+</table>

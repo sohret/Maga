@@ -1,0 +1,44 @@
+﻿@using PaWebsite.Resources
+@using PA.Data.Models.PAX;
+@{
+    Layout = null;
+}
+
+
+<style type="text/css">
+    .h4_logo {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-size: 40px;
+        font-weight: bold;
+    }
+</style>
+
+
+
+@{Html.RenderPartial("_Language");}
+
+
+<div class="main-header">
+    <div class="top-header">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-2 col-sm-12 col-xs-12  left-content">
+                    <div class="logo">
+                        <a href="@Url.Action("index", new { lang = ViewContext.RouteData.Values["lang"] })">
+                            <span id="h1" class="h4_logo">MAGA.<span style="color:#eb4141;">AZ</span></span>
+                            <span id="h2" class="h4_logo" style="display:none;">MAĞA<span style="color:#eb4141;">ZA</span></span>
+                        </a>
+                    </div>
+                </div>
+                @{Html.RenderPartial("_ComboCategory");}
+            </div>
+        </div>
+        <div id="breadcrumb">@{Html.RenderPartial("_Breadcrumb", (List<Category>)ViewBag.Global_Categories);}</div>
+
+    </div>
+</div>
+
+
+
+
+

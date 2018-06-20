@@ -1,0 +1,159 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{021CE638-4850-4BB5-BBAD-07283BCB1E92}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>PA.Data.Models</RootNamespace>
+    <AssemblyName>PA.Data.Models</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Z.EntityFramework.Plus.EF6, Version=1.7.1.0, Culture=neutral, PublicKeyToken=59b66d028979105b, processorArchitecture=MSIL">
+      <HintPath>..\packages\Z.EntityFramework.Plus.EF6.1.7.1\lib\net45\Z.EntityFramework.Plus.EF6.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Tables\PAX\AdsBoardSiteTracker.cs" />
+    <Compile Include="Tables\PAX\AdsBoardSiteCategory.cs" />
+    <Compile Include="Tables\PAX\AdsBoardSite.cs" />
+    <Compile Include="Tables\PAX\Brand.cs" />
+    <Compile Include="Tables\PAX\Category.cs" />
+    <Compile Include="Tables\PAX\Color.cs" />
+    <Compile Include="Tables\PAX\Language.cs" />
+    <Compile Include="ModelPAX.cs" />
+    <Compile Include="Tables\PAX\ProductDescription.cs" />
+    <Compile Include="Tables\PAX\Product.cs" />
+    <Compile Include="Tables\PAX\ProductNamePrefix.cs" />
+    <Compile Include="Tables\PAX\ProductProperty.cs" />
+    <Compile Include="Tables\PAX\ProductPropertyValue.cs" />
+    <Compile Include="Tables\PAX\Property.cs" />
+    <Compile Include="Tables\PAX\PropertyGroup.cs" />
+    <Compile Include="Tables\PAX\PropertyValue.cs" />
+    <Compile Include="Resources\FieldDisplayText.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>FieldDisplayText.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Tables\PAX\Shop.cs" />
+    <Compile Include="Tables\PAX\ProductTracker.cs" />
+    <Compile Include="Tables\PAX\ShopProductTracker.cs" />
+    <Compile Include="Tables\PAX\ShopProduct.cs" />
+    <Compile Include="Tables\Color.cs" />
+    <Compile Include="Tables\CategoryInCategory.cs" />
+    <Compile Include="Tables\ColorTranslate.cs" />
+    <Compile Include="Tables\ProductNamePrefix.cs" />
+    <Compile Include="Tables\ProductNamePrefixTranslate.cs" />
+    <Compile Include="Tables\ProductDefaultProperty.cs" />
+    <Compile Include="Tables\PropertyGroup.cs" />
+    <Compile Include="Tables\PropertyGroupTranslate.cs" />
+    <Compile Include="Tables\PropertyValueTranslate.cs" />
+    <Compile Include="Tables\PropertyValue.cs" />
+    <Compile Include="Tables\ScannedProductPAM.cs" />
+    <Compile Include="Tables\ScannedProduct.cs" />
+    <Compile Include="Tables\Crawler.cs" />
+    <Compile Include="Tables\Category.cs" />
+    <Compile Include="Tables\CategoryTranslate.cs" />
+    <Compile Include="Tables\Language.cs" />
+    <Compile Include="Tables\LanguageTranslate.cs" />
+    <Compile Include="Tables\Brand.cs" />
+    <Compile Include="ModelPA.cs" />
+    <Compile Include="Tables\Product.cs" />
+    <Compile Include="Tables\ProductProperty.cs" />
+    <Compile Include="Tables\ProductPropertyValue.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tables\Property.cs" />
+    <Compile Include="Tables\PropertyTranslate.cs" />
+    <Compile Include="Tables\PropertyValueType.cs" />
+    <Compile Include="Tables\Shop.cs" />
+    <Compile Include="Tables\ShopProduct.cs" />
+    <Compile Include="Tables\ShopTranslate.cs" />
+    <Compile Include="Views\ViewCategoryExt.cs" />
+    <Compile Include="Views\ViewColorExt.cs" />
+    <Compile Include="Views\ViewColor.cs" />
+    <Compile Include="Views\ViewLanguageExt.cs" />
+    <Compile Include="Views\ViewLanguage.cs" />
+    <Compile Include="Views\ViewProductExt.cs" />
+    <Compile Include="Views\ViewProduct.cs" />
+    <Compile Include="Views\ViewProductNamePrefixExt.cs" />
+    <Compile Include="Views\ViewProductNamePrefix.cs" />
+    <Compile Include="Views\ViewPropertyExt.cs" />
+    <Compile Include="Views\ViewProperty.cs" />
+    <Compile Include="Views\ViewPropertyGroupExt.cs" />
+    <Compile Include="Views\ViewPropertyGroup.cs" />
+    <Compile Include="Views\ViewPropertyValueExt.cs" />
+    <Compile Include="Views\ViewPropertyValue.cs" />
+    <Compile Include="Views\ViewScannedProduct.cs" />
+    <Compile Include="Views\ViewShopExt.cs" />
+    <Compile Include="Views\ViewShop.cs" />
+    <Compile Include="Views\ViewCategory.cs" />
+    <Compile Include="Tables\PAX\zSearch.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\FieldDisplayText.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>FieldDisplayText.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,31 @@
+﻿@using PA.Data.Models.PAX
+@model List<Category>
+
+@{
+    List<Category> cats = Model;
+    var category = ((List<Category>)ViewBag.Global_Categories).First(x => x.CategoryID == Model[0].CategoryID);
+}
+
+<div class="@*submenu submenu1 mega-menu*@" style="display:block !important;">
+    <div class="row">
+        @foreach (var cat in Model)
+        {
+            var subCategories = ((List<Category>)ViewBag.Global_Categories).Where(x => x.ParentID == cat.CategoryID).OrderBy(x => x.OrderNo).ToList();
+            <div class="widget-custom-menu col-xs-12 col-sm-12 col-md-3">
+                <h5 class="title widgettitle"><a href="@Url.Action("cat", new { lang = ViewContext.RouteData.Values["lang"], id = cat.CategoryID })"> @cat.Name</a></h5>
+                @foreach (var item in subCategories)
+                {
+                    var childCategories = ((List<Category>)ViewBag.Global_Categories).Where(x => x.ParentID == item.CategoryID).OrderBy(x => x.OrderNo).ToList();
+                    if (childCategories.Count > 0)
+                    {
+                        Html.RenderPartial("_AllCategories", childCategories);
+                        continue;
+                    }
+                    <ul>
+                        <li><a href='@Url.Action("cat", new { lang = ViewContext.RouteData.Values["lang"], id = @item.CategoryID })'>@item.Name</a></li>
+                    </ul>
+                }
+            </div>
+        }
+    </div>
+</div>

@@ -1,0 +1,32 @@
+﻿@using PaWebsite.Resources
+@{
+    Layout = null;
+}
+
+<div class="col-lg-9 col-md-5 col-sm-6 col-xs-12 midle-content">
+    <div class="search-form layout1 box-has-content">
+        <div class="search-block">
+            <form action="@Url.Action("Cat", "Home", new { culture = Culture })" method="get"></form>
+            <div class="search-inner">
+                <input id="inpSearch" name="text" type="text" autofocus class="search-info" placeholder="@Resurs.SearchEntireStoreHere..." style="width:100% !important;">
+            </div>
+            <div class="search-choice parent-content">
+                @{Html.RenderPartial("_SearchCombo");}
+            </div>
+            <a href="javascript:void(0);" class="search-button"><i class="fa fa-search" aria-hidden="true"></i></a>
+        </div>
+    </div>
+</div>
+
+
+
+@section script{
+
+    <script>
+        $('#btnSearch').click(function (e) {
+            $('#frmSearch').submit();
+        });
+
+    </script>
+
+}

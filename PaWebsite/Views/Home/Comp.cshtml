@@ -1,0 +1,124 @@
+﻿@model IEnumerable<PA.Data.Models.PAX.Product>
+@using PA.Data.Models.PAX
+@{
+    ViewBag.Title = "Comparison";
+
+    var prodPropValue = (IEnumerable<ProductPropertyValue>)ViewBag.ProdPropValue;
+
+    var _db = new PA.Data.Models.PAX.ModelPAX();
+}
+
+<style type="text/css">
+    .product-thumb {
+        text-align: center !important;
+        vertical-align: middle;
+        max-width: 300px !important;
+        width: 240px;
+    }
+
+        .product-thumb a {
+            /*width: 100% !important;*/
+            display: block !important;
+        }
+
+    .prop-name {
+        font-weight: bold;
+    }
+
+    table {
+        /* Create border between rows.*/
+        border-collapse: collapse;
+        border-spacing: 1px 1px;
+        /*background-color: #697a91;*/
+        /*width: 100%;*/
+    }
+
+    thead:after {
+        /* Increase border between thead and tbody.*/
+        display: block;
+        height: 0px;
+        content: "";
+        /*border: none;*/
+    }
+    /*th {
+        background-color: #dce0e6;
+        text-align: center;
+    }*/
+    th,
+    td {
+        padding: 0.5em;
+        border: 1px solid #f1ecec;
+    }
+    /*th:last-child,
+    td:last-child {
+        border: none;
+    }*/
+    /*td {
+        background-color: #eff4f6;
+    }*/
+
+
+    .cart-content {
+        border: none;
+    }
+
+    .comp-col-del {
+        margin-top: -28px;
+        width: 100%;
+        text-align: center;
+        height: 10px;
+        padding-bottom: 25px;
+        background-color: #ffffff;
+        z-index: 99;
+    }
+
+        .comp-col-del a {
+            color: #ff0000;
+            width: 33% !important;
+            float: left;
+        }
+</style>
+
+<div class="row content-form">
+    <div class="col-xs-12 col-sm-12 col-md-8 col-lg-12 content-offset">
+        <div class="cart-content">
+            <table class="shopping-cart-content">
+
+                @for (int i = 0; i < prodPropValue.Count(); i++)
+                {
+                    <tr class="title">
+                        <td class="product-thumb"></td>
+                        @if (i == 0)
+                        {
+                            foreach (var p in prodPropValue.Select(x => x.ProductID).Distinct())
+                            {
+                                var prod = Model.First(x => x.ID == p);
+                                <td class="product-thumb">
+
+                                    <div class="comp-col-del">
+                                        <a href="#"> <i class="fa fa-angle-left" aria-hidden="true"></i></a>
+                                        <a href="#"> <i class="fa fa-times" aria-hidden="true"></i></a>
+                                        <a href="#"> <i class="fa fa-angle-right" aria-hidden="true"></i></a>
+                                    </div>
+
+                                    <a href="#" class="prod-name">@prod.Name </a>
+                                    <a href="#"><img src="@Helper.CreateThumbImagePath((int)prod.ID)" alt=""></a>
+                                </td>
+                            }
+                        }
+                    </tr>
+                    <tr class="each-item">
+
+                        <td class="quantity-item" data-title="Product Name"><span class="prop-name">Ekran ölçüsü</span></td>
+                        @foreach (var p in prodPropValue.Select(x => x.ProductID).Distinct())
+                        {
+                            
+                            <td class="product-name" data-title="Product Name"><a href="#" class="product-name">1920x1080 пикс </a></td>
+                        }
+                    </tr>
+                }
+
+            </table>
+        </div>
+    </div>
+</div>

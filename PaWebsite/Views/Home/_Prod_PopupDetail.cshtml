@@ -1,0 +1,47 @@
+﻿@using PA.Data.Models.PAX
+@using PaWebsite.Resources
+@model ShopProduct
+@{
+    Layout = null;
+    ViewBag.Title = "Popup";
+    Product prod = (Product)ViewBag.Product;
+    List<Property> props = (List<Property>)ViewBag.Properties;
+    List<PropertyValue> propValues = (List<PropertyValue>)ViewBag.PropertyValues;
+}
+
+
+<div class="kt-popup-quickview ">
+    <div class="details-thumb col-xs-12 col-sm-6">
+        <div class="owl-carousel nav-style4 has-thumbs" data-autoplay="false" data-nav="true" data-dots="false" data-loop="false" data-slidespeed="800">
+            <div style="width: auto; height: auto;max-height: 420px;" class="details-item"><img src="@Helper.CreateThumbImagePath((int)prod.ID)" /></div>
+            <div style="width: auto; height: auto;max-height: 420px;" class="details-item"><img src="@Helper.CreateThumbImagePath((int)prod.ID)" /></div>
+            <div style="width: auto; height: auto;max-height: 420px;" class="details-item"><img src="@Helper.CreateThumbImagePath((int)prod.ID)" /></div>
+        </div>
+    </div>
+    <div class="details-info col-xs-12 col-sm-6">
+        <a href="#" class="product-name">@prod.Name</a>
+        <div class="rating">
+            <ul class="list-star">
+                <li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
+                <li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
+                <li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
+                <li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
+                <li><a href="#"><i class="fa fa-star-half-o" aria-hidden="true"></i></a></li>
+            </ul><span class="count">5 Review(s)</span>
+        </div>
+        <p class="description">Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 making it over 2000 years old. Richard McClintock, a Latin at Hampden-Sydney College in Virginia.</p>
+        <div class="price"><span>$@(Model.Price / 100)</span></div><div class="availability">Availability: <a href="#">in Stock</a></div>
+        <div class="group-button">
+            <div class="inner">
+                <a href="#" class="add-to-cart">
+                    <span class="text">@Resurs.AddToCart</span><span class="icon"><i class="fa fa-cart-arrow-down" aria-hidden="true"></i></span>
+                </a>
+                <a href="#" class="compare-button">
+                    <i class="fa fa-exchange" aria-hidden="true"></i>
+                </a><a href="#" class="wishlist-button">
+                    <i class="fa fa-heart-o" aria-hidden="true"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

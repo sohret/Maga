@@ -1,0 +1,27 @@
+﻿@model IEnumerable<PA.Data.Models.PAX.Category>
+
+@{
+    Layout = null;
+    
+}
+
+
+
+
+<div class="@*submenu submenu1 mega-menu*@" style="display:block !important;">
+    <div class="row">
+
+        @foreach (var cat in Model.Where(x=>x.ParentID==0))
+        {
+            <div class="widget-custom-menu col-xs-12 col-sm-12 col-md-3">
+                <h5 class="title widgettitle"><a href="@Url.Action("detail", "cat", new { culture=Culture,id=cat.CategoryID})"> @cat.Name</a></h5>
+                @foreach (var item in Model.Where(x => x.ParentID == cat.CategoryID).ToList())
+                {
+                    <ul>
+                        <li><a href="@Url.Action("detail", "cat", new { culture=Culture,id= item.CategoryID})">@item.Name</a></li>
+                    </ul>
+                }
+            </div>
+        }
+    </div>
+</div>

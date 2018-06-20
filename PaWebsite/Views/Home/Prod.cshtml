@@ -1,0 +1,403 @@
+﻿@using PA.Data.Models.PAX
+@using PaWebsite.Resources
+@model Product
+
+@{
+    var product = Model;
+    var properties = (List<Property>)ViewBag.Global_Properties;
+    var propertyValues = (List<PropertyValue>)ViewBag.Global_PropertyValues;
+
+    var prefix = ((List<ProductNamePrefix>)ViewBag.Global_ProductNamePrefixes).First(x => x.PrefixID == product.PrefixID);
+    var brand = ((List<Brand>)ViewBag.Global_Brands).First(x => x.ID == product.BrandID);
+    string productName = prefix.Name + " " + brand.Name + " " + product.Name;
+    ViewBag.Title = " - " + productName;
+}
+
+
+
+<div class="main-content shop-page main-content-detail">
+    <div class="container">
+        @*<div class="breadcrumbs">
+                <a href="#">Home</a> \ <span class="current">Detail</span>
+            </div>*@
+        <div class="row">
+            @*<div class="row">
+                    &nbsp;
+                </div>*@
+            <div class="col-xs-12 col-sm-7 col-md-8 col-lg-9 content-offset">
+                <div itemscope itemtype="http://schema.org/Product" class="about-product row">
+                    <div class="details-thumb col-xs-12 col-sm-12 col-md-6 col-lg-3">
+                        @*<div class="owl-carousel nav-style3 has-thumbs" data-autoplay="false" data-nav="true" data-dots="false" data-loop="true" data-slidespeed="800" data-margin="0" data-responsive='{"0":{"items":1}, "480":{"items":2}, "768":{"items":1}, "1024":{"items":1}, "1200":{"items":1}}'>
+                                <div class="details-item"><img src="@Helper.CreateBigImagePath((int)product.ID)" alt=""></div>
+                                <div class="details-item"><img src="@Helper.CreateBigImagePath((int)product.ID)" alt=""></div>
+                            </div>*@
+                        <img itemprop="image" src="@Helper.CreateBigImagePath((int)product.ID)" style="max-height: 250px" />
+                        
+                    </div>
+                    <div class="details-info col-xs-12 col-sm-12 col-md-6 col-lg-9">
+                        <h3 itemprop="name">@productName</h3>
+                        @*<div class="rating">
+                                <ul class="list-star">
+                                    <li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
+                                    <li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
+                                    <li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
+                                    <li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
+                                    <li><a href="#"><i class="fa fa-star-half-o" aria-hidden="true"></i></a></li>
+                                </ul>
+                                <span class="count">5 Review(s)</span>
+                            </div>*@
+                        <p class="description">@ViewBag.ProductDescription</p>
+                        <div class="price">
+                            @{
+                                string price = "<span itemprop=\"price\">" + (product.PriceFrom / 100.0).ToString("### ### ##0.##") + "</span> <i class='manat'>M</i>";
+                                if (product.PriceFrom != product.PriceTo)
+                                {
+                                    price += " - " + (product.PriceTo / 100.0).ToString("### ### ##0.##") + " <i class='manat'>M</i>";
+                                }
+
+                            }
+                            <span itemprop="offers" itemscope itemtype="http://schema.org/Offer">@Html.Raw(price)</span>
+                        </div>
+                        @*<div class="availability">Availability: <a href="#">in Stock</a></div>*@
+                        <div class="group-social">
+                            <ul class="list-socials">
+                                <li><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+                                <li><a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+                                <li><a href="#"><i class="fa fa-google-plus" aria-hidden="true"></i></a></li>
+                                <li><a href="#"><i class="fa fa-instagram" aria-hidden="true"></i></a></li>
+                                <li><a href="#"><i class="fa fa-pinterest" aria-hidden="true"></i></a></li>
+                            </ul>
+                        </div>
+                        @*<div class="quantity">
+                                <div class="group-quantity-button">
+                                    <a class="minus" href="#"><i class="fa fa-minus" aria-hidden="true"></i></a>
+                                    <input class="input-text qty text" type="text" size="4" title="Qty" value="1" name="quantity">
+                                    <a class="plus" href="#"><i class="fa fa-plus" aria-hidden="true"></i></a>
+                                </div>
+                            </div>*@
+                        @*<div class="group-button">
+                                <div class="inner">
+                                    <a href="#" class="add-to-cart"><span class="text">@Resurs.AddToCart</span><span class="icon"><i class="fa fa-cart-arrow-down" aria-hidden="true"></i></span></a>
+                                    <a href="#" class="compare-button"><i class="fa fa-exchange" aria-hidden="true"></i></a>
+                                    <a href="#" class="wishlist-button"><i class="fa fa-heart-o" aria-hidden="true"></i></a>
+                                </div>
+                            </div>*@
+                    </div>
+                </div>
+                <div class="kt-tab nav-tab-style2">
+                    <ul class="nav list-nav">
+                        <li class="active"><a data-animated="fadeIn" data-toggle="pill" href="#tab1">@Resurs.Product_Tab_BuyFrom</a></li>
+                        <li><a data-animated="zoomInUp" data-toggle="pill" href="#tab2">@Resurs.Product_Tab_Description</a></li>
+                        <li><a data-animated="rotateInDownLeft" data-toggle="pill" href="#tab3">@Resurs.Product_Tab_Comments</a></li>
+                    </ul>
+                    <div class="tab-content">
+                        <div id="tab1" class="tab-panel active ">
+                            @{Html.RenderPartial("_Product_AdsBoardSites", Model);}
+                            <div></div>
+                            @{Html.RenderPartial("_ProductPrices", Model);}
+                        </div>
+                        <div id="tab2" class="tab-panel">
+                            @{Html.RenderPartial("_ProductProperties", Model);}
+                        </div>
+                        <div id="tab3" class="tab-panel">
+                            @{Html.RenderPartial("_Comments");}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-5 col-md-4 col-lg-3 sidebar">
+                <div class="equal-container widget-featrue-box">
+                    <div class="row">
+                        @*<div class="col-ts-12 col-xs-4 col-sm-12 col-md-12 col-lg-12 featrue-item">
+                                <div class="featrue-box layout2 equal-elem">
+                                    <div class="block-icon"><a href="#"><span class="fa fa-truck"></span></a></div>
+                                    <div class="block-inner">
+                                        <a href="#" class="title">Free Shipping & Return</a>
+                                        <p class="des">Free shipping on all oders over $100</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-ts-12 col-xs-4 col-sm-12 col-md-12 col-lg-12 featrue-item">
+                                <div class="featrue-box layout2 equal-elem">
+                                    <div class="block-icon"><a href="#"><span class="fa fa-retweet"></span></a></div>
+                                    <div class="block-inner">
+                                        <a href="#" class="title">Money back guarantee</a>
+                                        <p class="des">100% money back guarantee</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-ts-12 col-xs-4 col-sm-12 col-md-12 col-lg-12 featrue-item">
+                                <div class="featrue-box layout2 equal-elem">
+                                    <div class="block-icon"><a href="#"><span class="fa fa-life-ring"></span></a></div>
+                                    <div class="block-inner">
+                                        <a href="#" class="title">Online support 24/7</a>
+                                        <p class="des">Online support 24/7</p>
+                                    </div>
+                                </div>
+                            </div>*@
+                    </div>
+                </div>
+                <div class="widget widget-banner row-banner">
+                    <div class="banner banner-effect1">
+                        <a href="#"><img src="images/banner23.jpg" alt=""></a>
+                    </div>
+                </div>
+                @*<div class="widget widget-recent-post">
+                        <h5 class="widgettitle">Bestseller</h5>
+                        <ul class="list-recent-posts">
+                            <li class="product-item">
+                                <div class="thumb"><a href="detail.html"><img src="images/small-product14.jpg" alt=""></a></div>
+                                <div class="info">
+                                    <div class="rating">
+                                        <ul class="list-star">
+                                            <li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
+                                            <li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
+                                            <li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
+                                            <li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
+                                            <li><a href="#"><i class="fa fa-star-half-o" aria-hidden="true"></i></a></li>
+                                        </ul>
+                                        <span class="count">5 Review(s)</span>
+                                    </div>
+                                    <a href="detail.html" tppabs="http://kute-themes.com/html/techone/html/detail.html" class="product-name">Instant Camera</a>
+                                    <div class="price">
+                                        <span class="del">$700.00</span>
+                                        <span class="ins">$700.00</span>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="product-item">
+                                <div class="thumb"><a href="detail.html" tppabs="http://kute-themes.com/html/techone/html/detail.html"><img src="images/small-product15.jpg" tppabs="http://kute-themes.com/html/techone/html/images/small-product15.jpg" alt=""></a></div>
+                                <div class="info">
+                                    <div class="rating">
+                                        <ul class="list-star">
+                                            <li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
+                                            <li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
+                                            <li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
+                                            <li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
+                                            <li><a href="#"><i class="fa fa-star-half-o" aria-hidden="true"></i></a></li>
+                                        </ul>
+                                        <span class="count">5 Review(s)</span>
+                                    </div>
+                                    <a href="detail.html" tppabs="http://kute-themes.com/html/techone/html/detail.html" class="product-name">SteelSeries NIMBUS Controlle</a>
+                                    <div class="price">
+                                        <span>$100</span>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="product-item">
+                                <div class="thumb"><a href="detail.html" tppabs="http://kute-themes.com/html/techone/html/detail.html"><img src="images/small-product16.jpg" tppabs="http://kute-themes.com/html/techone/html/images/small-product16.jpg" alt=""></a></div>
+                                <div class="info">
+                                    <a href="detail.html" tppabs="http://kute-themes.com/html/techone/html/detail.html" class="product-name">Smartphone RAM 4 GB New</a>
+                                    <div class="price">
+                                        <span>$350.00</span>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="product-item">
+                                <div class="thumb"><a href="detail.html" tppabs="http://kute-themes.com/html/techone/html/detail.html"><img src="images/small-product15.jpg" tppabs="http://kute-themes.com/html/techone/html/images/small-product15.jpg" alt=""></a></div>
+                                <div class="info">
+                                    <div class="rating">
+                                        <ul class="list-star">
+                                            <li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
+                                            <li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
+                                            <li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
+                                            <li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
+                                            <li><a href="#"><i class="fa fa-star-half-o" aria-hidden="true"></i></a></li>
+                                        </ul>
+                                        <span class="count">5 Review(s)</span>
+                                    </div>
+                                    <a href="detail.html" tppabs="http://kute-themes.com/html/techone/html/detail.html" class="product-name">SteelSeries NIMBUS Controlle</a>
+                                    <div class="price">
+                                        <span>$100</span>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>*@
+            </div>
+        </div>
+        @*<div class="products-arrivals">
+                <div class="section-head box-has-content">
+                    <h4 class="section-title">Related Products</h4>
+                </div>
+                <div class="section-content">
+                    <div class="owl-carousel product-list-owl nav-style2 equal-container" data-autoplay="false" data-nav="true" data-dots="false" data-loop="false" data-slidespeed="800" data-margin="0" data-responsive='{"0":{"items":1}, "480":{"items":2}, "650":{"items":3}, "1024":{"items":4}, "1200":{"items":5}}'>
+                        <div class="product-item layout1">
+                            <div class="product-inner equal-elem">
+                                <div class="thumb">
+                                    <a href="#" class="quickview-button"><span class="icon"><i class="fa fa-eye" aria-hidden="true"></i></span> Quick View</a>
+                                    <a href="detail.html" tppabs="http://kute-themes.com/html/techone/html/detail.html" class="thumb-link"><img src="images/product1.jpg" tppabs="http://kute-themes.com/html/techone/html/images/product1.jpg" alt=""></a>
+                                </div>
+                                <div class="info">
+                                    <a href="detail.html" tppabs="http://kute-themes.com/html/techone/html/detail.html" class="product-name">Rubberized Hard Case Older MacBook Pro 13.3"</a>
+                                    <div class="price">
+                                        <span>$350.00</span>
+                                    </div>
+                                </div>
+                                <div class="group-button">
+                                    <div class="inner">
+                                        <a href="#" class="add-to-cart"><span class="text">ADD TO CART</span><span class="icon"><i class="fa fa-cart-arrow-down" aria-hidden="true"></i></span></a>
+                                        <a href="#" class="compare-button"><i class="fa fa-exchange" aria-hidden="true"></i></a>
+                                        <a href="#" class="wishlist-button"><i class="fa fa-heart-o" aria-hidden="true"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="product-item layout1">
+                            <div class="product-inner equal-elem">
+                                <ul class="group-flash">
+                                    <li><span class="new flash">NEW</span></li>
+                                </ul>
+                                <div class="thumb">
+                                    <a href="#" class="quickview-button"><span class="icon"><i class="fa fa-eye" aria-hidden="true"></i></span> Quick View</a>
+                                    <a href="detail.html" tppabs="http://kute-themes.com/html/techone/html/detail.html" class="thumb-link"><img src="images/product4.jpg" tppabs="http://kute-themes.com/html/techone/html/images/product4.jpg" alt=""></a>
+                                </div>
+                                <div class="info">
+                                    <a href="detail.html" tppabs="http://kute-themes.com/html/techone/html/detail.html" class="product-name">Smartphone RAM 4 GB New</a>
+                                    <div class="price">
+                                        <span>$350.00</span>
+                                    </div>
+                                </div>
+                                <div class="group-button">
+                                    <div class="inner">
+                                        <a href="#" class="add-to-cart"><span class="text">ADD TO CART</span><span class="icon"><i class="fa fa-cart-arrow-down" aria-hidden="true"></i></span></a>
+                                        <a href="#" class="compare-button"><i class="fa fa-exchange" aria-hidden="true"></i></a>
+                                        <a href="#" class="wishlist-button"><i class="fa fa-heart-o" aria-hidden="true"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="product-item layout1">
+                            <div class="product-inner equal-elem">
+                                <ul class="group-flash">
+                                    <li><span class="sale flash">-50%</span></li>
+                                    <li><span class="best flash">Bestseller</span></li>
+                                </ul>
+                                <div class="thumb">
+                                    <a href="#" class="quickview-button"><span class="icon"><i class="fa fa-eye" aria-hidden="true"></i></span> Quick View</a>
+                                    <a href="detail.html" tppabs="http://kute-themes.com/html/techone/html/detail.html" class="thumb-link"><img src="images/product5.jpg" tppabs="http://kute-themes.com/html/techone/html/images/product5.jpg" alt=""></a>
+                                </div>
+                                <div class="info">
+                                    <a href="detail.html" tppabs="http://kute-themes.com/html/techone/html/detail.html" class="product-name">Fujifilm INSTAX Mini 8 Instant Camera (White)</a>
+                                    <div class="price">
+                                        <span class="del">$700.00</span>
+                                        <span class="ins">$350.00</span>
+                                    </div>
+                                </div>
+                                <div class="group-button">
+                                    <div class="inner">
+                                        <a href="#" class="add-to-cart"><span class="text">ADD TO CART</span><span class="icon"><i class="fa fa-cart-arrow-down" aria-hidden="true"></i></span></a>
+                                        <a href="#" class="compare-button"><i class="fa fa-exchange" aria-hidden="true"></i></a>
+                                        <a href="#" class="wishlist-button"><i class="fa fa-heart-o" aria-hidden="true"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="product-item layout1">
+                            <div class="product-inner equal-elem">
+                                <div class="thumb">
+                                    <a href="#" class="quickview-button"><span class="icon"><i class="fa fa-eye" aria-hidden="true"></i></span> Quick View</a>
+                                    <a href="detail.html" tppabs="http://kute-themes.com/html/techone/html/detail.html" class="thumb-link"><img src="images/product6.jpg" tppabs="http://kute-themes.com/html/techone/html/images/product6.jpg" alt=""></a>
+                                </div>
+                                <div class="info">
+                                    <a href="detail.html" tppabs="http://kute-themes.com/html/techone/html/detail.html" class="product-name">PC Prox 21.5-inch and 27-inch (Late 2017) reviews</a>
+                                    <div class="price">
+                                        <span>$550.00</span>
+                                    </div>
+                                </div>
+                                <div class="group-button">
+                                    <div class="inner">
+                                        <a href="#" class="add-to-cart"><span class="text">ADD TO CART</span><span class="icon"><i class="fa fa-cart-arrow-down" aria-hidden="true"></i></span></a>
+                                        <a href="#" class="compare-button"><i class="fa fa-exchange" aria-hidden="true"></i></a>
+                                        <a href="#" class="wishlist-button"><i class="fa fa-heart-o" aria-hidden="true"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="product-item layout1">
+                            <div class="product-inner equal-elem">
+                                <ul class="group-flash">
+                                    <li><span class="sale flash">-50%</span></li>
+                                </ul>
+                                <div class="thumb">
+                                    <a href="#" class="quickview-button"><span class="icon"><i class="fa fa-eye" aria-hidden="true"></i></span> Quick View</a>
+                                    <a href="detail.html" tppabs="http://kute-themes.com/html/techone/html/detail.html" class="thumb-link"><img src="images/product7.jpg" tppabs="http://kute-themes.com/html/techone/html/images/product7.jpg" alt=""></a>
+                                </div>
+                                <div class="info">
+                                    <a href="detail.html" tppabs="http://kute-themes.com/html/techone/html/detail.html" class="product-name">Best Accessories- SteelSeries NIMBUS Controlle</a>
+                                    <div class="price">
+                                        <span class="del">$500.00</span>
+                                        <span class="ins">$250.00</span>
+                                    </div>
+                                </div>
+                                <div class="group-button">
+                                    <div class="inner">
+                                        <a href="#" class="add-to-cart"><span class="text">ADD TO CART</span><span class="icon"><i class="fa fa-cart-arrow-down" aria-hidden="true"></i></span></a>
+                                        <a href="#" class="compare-button"><i class="fa fa-exchange" aria-hidden="true"></i></a>
+                                        <a href="#" class="wishlist-button"><i class="fa fa-heart-o" aria-hidden="true"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="product-item layout1">
+                            <div class="product-inner equal-elem">
+                                <ul class="group-flash">
+                                    <li><span class="sale flash">-50%</span></li>
+                                    <li><span class="best flash">Bestseller</span></li>
+                                </ul>
+                                <div class="thumb">
+                                    <a href="#" class="quickview-button"><span class="icon"><i class="fa fa-eye" aria-hidden="true"></i></span> Quick View</a>
+                                    <a href="detail.html" tppabs="http://kute-themes.com/html/techone/html/detail.html" class="thumb-link"><img src="images/product24.jpg" tppabs="http://kute-themes.com/html/techone/html/images/product24.jpg" alt=""></a>
+                                </div>
+                                <div class="info">
+                                    <a href="detail.html" tppabs="http://kute-themes.com/html/techone/html/detail.html" class="product-name">Fujifilm INSTAX Mini 8 Instant Camera (White)</a>
+                                    <div class="price">
+                                        <span class="del">$700.00</span>
+                                        <span class="ins">$350.00</span>
+                                    </div>
+                                </div>
+                                <div class="group-button">
+                                    <div class="inner">
+                                        <a href="#" class="add-to-cart"><span class="text">ADD TO CART</span><span class="icon"><i class="fa fa-cart-arrow-down" aria-hidden="true"></i></span></a>
+                                        <a href="#" class="compare-button"><i class="fa fa-exchange" aria-hidden="true"></i></a>
+                                        <a href="#" class="wishlist-button"><i class="fa fa-heart-o" aria-hidden="true"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>*@
+    </div>
+    @*@{Html.RenderPartial("_Brand");}*@
+    @*<div class="brand">
+            <div class="container">
+                <div class="owl-carousel" data-autoplay="false" data-nav="false" data-dots="false" data-loop="false" data-slidespeed="800" data-margin="30" data-responsive='{"0":{"items":2}, "640":{"items":3}, "768":{"items":3}, "1024":{"items":4}, "1200":{"items":5}}'>
+                    <div class="brand-item"><a href="#"><img src="images/brand1.jpg" tppabs="http://kute-themes.com/html/techone/html/images/brand1.jpg" alt=""></a></div>
+                    <div class="brand-item"><a href="#"><img src="images/brand1.jpg" tppabs="http://kute-themes.com/html/techone/html/images/brand1.jpg" alt=""></a></div>
+                    <div class="brand-item"><a href="#"><img src="images/brand1.jpg" tppabs="http://kute-themes.com/html/techone/html/images/brand1.jpg" alt=""></a></div>
+                    <div class="brand-item"><a href="#"><img src="images/brand1.jpg" tppabs="http://kute-themes.com/html/techone/html/images/brand1.jpg" alt=""></a></div>
+                    <div class="brand-item"><a href="#"><img src="images/brand1.jpg" tppabs="http://kute-themes.com/html/techone/html/images/brand1.jpg" alt=""></a></div>
+                </div>
+            </div>
+        </div>*@
+</div>
+
+
+
+
+@*<div id="hypercomments_widget"></div>
+    <script type="text/javascript">
+        _hcwp = window._hcwp || [];
+        _hcwp.push({ widget: "Stream", widget_id: 95947 });
+        (function () {
+            if ("HC_LOAD_INIT" in window) return;
+            HC_LOAD_INIT = true;
+            var lang = (navigator.language || navigator.systemLanguage || navigator.userLanguage || "en").substr(0, 2).toLowerCase();
+            var hcc = document.createElement("script"); hcc.type = "text/javascript"; hcc.async = true;
+            hcc.src = ("https:" == document.location.protocol ? "https" : "http") + "://w.hypercomments.com/widget/hc/95947/" + lang + "/widget.js";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hcc, s.nextSibling);
+        })();
+    </script>
+    <a href="http://hypercomments.com" rel="nofollow" class="hc-link" title="comments widget">comments powered by HyperComments</a>*@

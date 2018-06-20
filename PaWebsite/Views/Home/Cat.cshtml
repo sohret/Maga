@@ -1,0 +1,278 @@
+﻿@using PaWebsite.Resources
+@using PA.Data.Models.PAX
+
+@model List<PA.Data.Models.PAX.Product>
+
+
+@{
+    var products = Model;
+    var shopProducts = (List<ShopProduct>)ViewBag.ShopProducts;
+    //List<ShopProduct> showingProduct = new List<ShopProduct>();
+    //if (Request.QueryString["pageNo"] == null || Request.QueryString["pageNo"] == "1")
+    //{
+    //    showingProduct = Model.Take(10).ToList();
+    //}
+    bool _isAdmin = Session["isAdmin"] == null ? false : (bool)Session["isAdmin"];
+    int order = 1;
+    if (Request.QueryString["order"] != null)
+    {
+        int.TryParse(Request.QueryString["order"], out order);
+    }
+}
+
+
+<div class="main-content shop-page main-content-grid">
+    <div class="container">
+        @*<div class="breadcrumbs">
+                <a href="#">&nbsp;</a>  <span class="current">&nbsp;</span>
+            </div>*@
+        <div class="row">&nbsp;</div>
+        <div class="row" id="dvRow">
+            <div class="col-xs-12 col-sm-7 col-md-8 col-lg-9 content-offset">
+                @*<div class="main-banner">
+                        <div class="banner banner-effect1">
+                            <a href="#"><img src="/Content/images/banner22.jpg" alt=""></a>
+                        </div>
+                    </div>*@
+
+                <div class="categories-content">
+                    @*<h4 class="shop-title">Grid Category</h4>*@
+                    <div class="top-control box-has-content">
+                        <div class="control">
+                            <div class="filter-choice">
+                                <select id="order" data-placeholder="All Categories" class="chosen-select">
+                                    @if (order == 1)
+                                    {
+                                        <option selected value="1">Ucuzdan bahaya</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="1">Ucuzdan bahaya</option>
+                                    }
+                                    @if (order == 2)
+                                    {
+                                        <option selected value="2">Bahadan ucuza</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="2">Bahadan ucuza</option>
+                                    }
+                                    @if (order == 3)
+                                    {
+                                        <option selected value="3">A-Z</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="3">A-Z</option>
+                                    }
+                                    @if (order == 4)
+                                    {
+                                        <option selected value="4">Z-A</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="4">Z-A</option>
+                                    }
+                                </select>
+                            </div>
+                            @*<div class="select-item" style="display:none">
+                                    <select id="inpCount" data-placeholder="All Categories" class="chosen-select">
+                                        <option value="1">12 per page</option>
+                                        <option value="2">9 per page</option>
+                                        <option value="3">12 per page</option>
+                                        <option value="4">15 per page</option>
+                                        <option value="5">18 per page</option>
+                                        <option value="5">21 per page</option>
+                                    </select>
+                                </div>
+                                <div class="control-button" style="display:none">
+                                    <a href="#" class="grid-button active"><span class="icon"><i class="fa fa-th-large" aria-hidden="true"></i> </span>@Resurs.Grid</a>
+                                    <a href="#" class="list-button"><span class="icon"><i class="fa fa-th-list" aria-hidden="true"></i></span> @Resurs.List</a>
+                                </div>*@
+                        </div>
+                    </div>
+                    <div class="product-container auto-clear list-style equal-container box-has-content">
+                        @foreach (var product in Model)
+                        {
+                            <div class="product-item layout1 col-ts-12 col-xs-6 col-sm-6 col-md-4 col-lg-4 no-padding">
+                                <div class="product-inner equal-elem">
+                                    <div class="thumb">
+                                        @*<a href="javascript:void(0);" data-popup-url="@Url.Action("prod", new { lang = ViewContext.RouteData.Values["lang"], id = item.ProductID })" class="quickview-button"><span class="icon"><i class="fa fa-eye" aria-hidden="true"></i></span> @Resurs.QuickView</a>*@
+                                        <a href="@Url.Action("prod", new { lang = ViewContext.RouteData.Values["lang"], id = product.ID })" class="thumb-link"><img style="max-width:170px;" src="@Helper.CreateThumbImagePath((int)product.ID)" alt="@product.Name" oncontextmenu='@Html.Raw(_isAdmin ? "LoadPopup(this);" : "javascript:void(0);")' data-id="@product.ID"></a>
+
+
+                                    </div>
+
+                                    <div class="info">
+                                        @*<div class="rating">
+                                                <ul class="list-star">
+                                                    <li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
+                                                    <li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
+                                                    <li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
+                                                    <li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
+                                                    <li><a href="#"><i class="fa fa-star-half-o" aria-hidden="true"></i></a></li>
+                                                </ul>
+                                                <span class="count">5 Review(s)</span>
+                                            </div>*@
+
+                                        @{
+                                            var prefix = ((List<ProductNamePrefix>)ViewBag.Global_Prefixes).First(x => x.PrefixID == product.PrefixID);
+                                            var brand = ((List<Brand>)ViewBag.Global_Brands).First(x => x.ID == product.BrandID);
+
+                                            var prodDesc = ((List<ProductDescription>)ViewBag.ProductDescription).FirstOrDefault(x => x.ProductID == product.ID);
+                                            var description = prodDesc == null ? "" : prodDesc.Description;
+                                            string productName = prefix.Name + " " + brand.Name + " " + product.Name;
+                                        }
+
+                                        <a href="@Url.Action("prod", new { lang = ViewContext.RouteData.Values["lang"], id = product.ID })" class="product-name"> @productName </a>
+                                        <p class="description">@description</p>
+                                        <div class="price">
+                                            @*<span class="del">@item.Price <i class="manat">M</i></span>*@
+                                            @{
+                                                string price = (product.PriceFrom / 100.0).ToString("### ### ##0.##") + " <i class='manat'>M</i>";
+                                                if (product.PriceFrom != product.PriceTo)
+                                                {
+                                                    price += " - " + (product.PriceTo / 100.0).ToString("### ### ##0.##") + " <i class='manat'>M</i>";
+                                                }
+                                            }
+                                            <span class="ins">@Html.Raw(price)</span>
+                                        </div>
+
+                                        @{Html.RenderPartial("_ProductList_AdsBoardSites", product);}
+
+                                    </div>
+                                    <div class="group-button">
+                                        <div class="inner">
+                                            @{Html.RenderPartial("_ProductPricesForProductList", product);}
+                                            @*<a href="#" class="compare-button"><span class="icon"><i class="fa fa-exchange" aria-hidden="true"></i></span><span class="text">@Resurs.AddToCompare</span></a>
+                                                <a href="#" class="wishlist-button"><span class="icon"><i class="fa fa-heart-o" aria-hidden="true"></i></span><span class="text">@Resurs.AddToWishlist</span></a>*@
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                                                }
+
+                    </div>
+                    @{Html.RenderPartial("_ProductList_Pagination");}
+                    @*<span class="note">Showing 1-8 of 12 result</span>*@
+                </div>
+            </div>
+            @{Html.RenderPartial("_FilterPanel");}
+        </div>
+    </div>
+    @{Html.RenderPartial("_Brand");}
+</div>
+
+
+@section script{
+
+    <!-- Modal -->
+    <div class="modal fade" id="uploadImagePopup" tabindex="-1" role="dialog" aria-labelledby="uploadImagePopup" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                @*<div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">@Resurs.Edit</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>*@
+                <div class="modal-body">
+
+                    <div class="kt-tab nav-tab-style2">
+                        <ul class="nav list-nav">
+                            <li class="active"><a data-animated="fadeIn" data-toggle="pill" href="#tab1">@Resurs.MyComputer</a></li>
+                            <li><a data-animated="zoomInUp" data-toggle="pill" href="#tab2">@Resurs.FromLink</a></li>
+                        </ul>
+                        <div class="tab-content">
+                            <div id="tab1" class="tab-panel active ">
+                                <form action="@Url.Action("UploadImage")" id="frmFile" method="post" enctype="multipart/form-data" class="form-horizontal">
+                                    @Html.AntiForgeryToken()
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-sm-9">
+                                                <input type="file" id="inpUploadFile" accept="image/*" class="form-control-file" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div id="tab2" class="tab-panel">
+                                <form action="@Url.Action("SaveDownloadedImage")" id="frmUrl" method="post" enctype="multipart/form-data" class="form-horizontal">
+                                    @Html.AntiForgeryToken()
+                                    <div class="form-group">
+                                        <label for="img" class="col-sm-3 control-label">Image url</label>
+                                        <div class="col-sm-9">
+                                            <input type="url" id="inpUrl" placeholder="http://ww.example.com/img1.png" class="form-control" />
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">@Resurs.Close</button>
+                    <button type="button" id="popupApply" class="btn btn-primary">@Resurs.Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script type="text/javascript">
+
+        var productID = 0;
+        var actionDone = false;
+
+        function LoadPopup(btn) {
+            window.event.preventDefault();
+            window.event.stopPropagation();
+            productID = $(btn).data('id');
+            $('#uploadImagePopup').modal('show');
+        }
+
+        $('#popupApply').click(function () {
+
+            var uploadURL ='@Url.Action("UploadImage")';
+            var downloadURL = '@Url.Action("SaveDownloadedImage")';
+            var url = $('#inpUrl').val();
+
+            var data = new FormData();
+            data.append('productID', productID);
+            data.append('uploadedImage', $('#inpUploadFile')[0].files[0]);
+
+            if (url != '') {
+                $.post(downloadURL, { productID: productID, url: url }).done(function (resp) {
+                    $('#uploadImagePopup').modal('hide');
+                    location.reload();
+                });
+            }
+
+
+            if ($('#inpUploadFile')[0].files[0] != null) {
+                $.ajax({
+                    type: "POST",
+                    url: uploadURL,
+                    data: data,
+                    contentType: false,       // The content type used when sending data to the server.
+                    cache: false,             // To unable request pages to be cached
+                    processData: false,
+                    success: function (resp) {
+                        $('#uploadImagePopup').modal('hide');
+                        location.reload();
+                    }
+                });
+            }
+            
+
+        });
+
+
+
+    </script>
+
+
+
+}

@@ -1,0 +1,25 @@
+﻿@using PaWebsite.Resources;
+@using PA.Data.Models.PAX;
+
+@{
+    Layout = null;
+
+    var categories = (List<Category>)ViewBag.ParentCategories;
+    int rootID = (int)(ViewBag.RootCategoryID ?? -1);
+}
+
+<select data-placeholder="All Categories" id="cmbCategories" class="chosen-select">
+    <option value="-1">@Resurs.AllCategories</option>
+
+    @foreach (var cat in categories)
+    {
+        if (rootID == cat.CategoryID)
+        {
+            <option selected value="@cat.CategoryID">@cat.Name</option>
+        }
+        else
+        {
+            <option value="@cat.CategoryID">@cat.Name</option>
+        }
+    }
+</select>

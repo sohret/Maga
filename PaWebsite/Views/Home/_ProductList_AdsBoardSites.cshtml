@@ -1,0 +1,58 @@
+﻿@using PaWebsite.Resources;
+@using PA.Data.Models.PAX;
+@model Product
+
+@{
+    var product = Model;
+}
+
+<style type="text/css">
+    .compare-button, .wishlist-button {
+        float: right;
+    }
+
+    .icon {
+        font-size: 22px;
+        font-weight: 600;
+        color: #d9534f;
+    }
+
+    .comp {
+       background-color:#00ff00; /*#d9534f;*/
+        color: #00ff00;
+    }
+</style>
+
+@*<table id="tbl">
+        <tr>
+            @foreach (AdsBoardSite adsSite in (List<AdsBoardSite>)ViewBag.Global_AdsBoardSite)
+            {
+                var adsCategory = ((List<AdsBoardSiteCategory>)ViewBag.Global_AdsBoardSiteCategory).Where(x => x.AdsBoardSiteID == adsSite.ID && x.CategoryID == product.CategoryID).FirstOrDefault();
+
+                if (adsCategory != null)
+                {
+                    <td style="padding-left:20px"><a class="btn btn-sm btn-danger" target="_blank" href="@Url.Action("go", new { lang = ViewContext.RouteData.Values["lang"], id = product.ID, adsId = adsSite.ID })">@adsSite.Name</a></td>
+                }
+            }
+        </tr>
+    </table>*@
+
+<div class="inner">
+
+    @foreach (AdsBoardSite adsSite in (List<AdsBoardSite>)ViewBag.Global_AdsBoardSite)
+    {
+        var adsCategory = ((List<AdsBoardSiteCategory>)ViewBag.Global_AdsBoardSiteCategory).Where(x => x.AdsBoardSiteID == adsSite.ID && x.CategoryID == product.CategoryID).FirstOrDefault();
+
+        if (adsCategory != null)
+        {
+            <a class="btn btn-sm btn-danger" target="_blank" href="@Url.Action("go", new { lang = ViewContext.RouteData.Values["lang"], id = product.ID, adsId = adsSite.ID })">@adsSite.Name</a>
+
+        }
+    }
+
+
+    <a href="javascript:void(0);" class="compare-button" data-product-id="@product.ID" title="@Resurs.AddToCompare"><span class="icon"><i class="fa fa-exchange" aria-hidden="true"></i></span><span class="text"></span></a>
+    <span class="compare-button">&nbsp;&nbsp;&nbsp;</span>
+    <a href="javascript:void(0);" class="wishlist-button" data-product-id="@product.ID" onclick="AddToCompare(@product.ID,this);" title="@Resurs.AddToWishlist"><span class="icon"><i class="fa fa-heart-o" aria-hidden="true"></i></span><span class="text"></span></a>
+</div>
+

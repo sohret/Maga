@@ -1,0 +1,36 @@
+﻿@using PaWebsite.Resources
+@{
+    var langs = (List<PA.Data.Models.PAX.Language>)ViewBag.LanguagesToChange;
+
+    string queryString = string.IsNullOrEmpty(Request.Url.Query) ? "" : Request.Url.Query;
+}
+<div class="topbar layout1">
+    <div class="container">
+        <ul class="menu-topbar">
+            <li class="language menu-item-has-children">
+                <a href="" class="toggle-submenu"><span class="flag"><img src="/Content/images/@(Culture.Substring(0,2)).png" alt=""></span> @Culture.Substring(0, 2) </a>
+                <ul class="list-language submenu">
+                    @{
+                        foreach (var lang in langs)
+                        {
+                            <li>
+                                <a href='@Url.Action(ViewContext.RouteData.Values["action"].ToString(), ViewContext.RouteData.Values["controller"].ToString(), new { lang = @lang.Code, id = ViewContext.RouteData.Values["id"] }, null)@queryString'>
+                                    <span class="flag">
+                                        <img src='@string.Concat("/Content/images/", @lang.Code, ".png")' alt="">
+                                    </span> @lang.Code.ToUpper()
+                                </a>
+                            </li>
+                        }
+                    }
+                </ul>
+            </li>
+        </ul>
+
+
+        <ul class="menu-topbar top-links">
+            <li><a id="lnkComp" href="@Url.Action("comp", new { lang = ViewContext.RouteData.Values["lang"]})">@Resurs.AddToCompare <span id="comp-count"></span></a></li>
+            <li><a href="javascript:void(0);"><span onclick="ClearCompare();"><i class="fa fa-close" aria-hidden="true"></i></span></a></li>
+        </ul>
+
+    </div>
+</div>

@@ -1,0 +1,21 @@
+﻿@model string
+@{
+    Layout = "~/Views/Shared/_RedirectLayout.cshtml";
+}
+<script>
+
+    function redirect() {
+
+        window.location.href = "@Html.Raw(ViewBag.RedirectUrl)";
+
+        @*var form = $('<form method="@ViewBag.Method"></form>');
+        form.attr('action', '@Html.Raw(ViewBag.RedirectUrl)');
+
+        $("body").append(form);
+
+        $(form)[0].submit();*@
+    }
+
+    redirect();
+
+</script>

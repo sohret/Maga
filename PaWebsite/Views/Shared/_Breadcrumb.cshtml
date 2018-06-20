@@ -1,0 +1,82 @@
+﻿@using PaWebsite.Resources;
+@using PA.Data.Models.PAX;
+
+@model List<Category>
+
+@if (Model != null && (ViewBag.Product != null || ViewBag.Category != null))
+{
+    Product product = ViewBag.Product;
+    Category category = ViewBag.Category;
+
+    int CategoryID = (product == null ? category.CategoryID : product.CategoryID);
+
+    if (category == null)
+    {
+        category = Model.First(x => x.CategoryID == CategoryID && x.IsMain);
+    }
+
+    Category m1 = null, m2 = null, m3 = null, m4 = null, m5 = null;
+
+    if (category.ParentID != 0)
+    {
+        m1 = Model.FirstOrDefault(x => x.CategoryID == category.ParentID && x.IsMain);
+    }
+    if (m1 != null)
+    {
+        m2 = Model.FirstOrDefault(x => x.CategoryID == m1.ParentID && x.IsMain);
+    }
+    if (m2 != null)
+    {
+        m3 = Model.FirstOrDefault(x => x.CategoryID == m2.ParentID && x.IsMain);
+    }
+    if (m3 != null)
+    {
+        m4 = Model.FirstOrDefault(x => x.CategoryID == m3.ParentID && x.IsMain);
+    }
+    if (m4 != null)
+    {
+        m5 = Model.FirstOrDefault(x => x.CategoryID == m4.ParentID && x.IsMain);
+    }
+
+    if (m1 != null)
+    {
+    <!-- Breadcrumb -->
+        <ol id="Breadcrumb" class="breadcrumb">
+
+            <li class="breadcrumb-item"><a href="@Url.Action("index", new { lang = ViewContext.RouteData.Values["lang"] })">Maga.az</a></li>
+
+            @{
+        if (m5 != null)
+        {
+            <li class="breadcrumb-item"><a href="@Url.Action("cat", new { lang = ViewContext.RouteData.Values["lang"], id = @m5.CategoryID })">@m5.Name</a></li>
+        }
+        if (m4 != null)
+        {
+            <li class="breadcrumb-item"><a href="@Url.Action("cat", new { lang = ViewContext.RouteData.Values["lang"], id = @m4.CategoryID })">@m4.Name</a></li>
+        }
+        if (m3 != null)
+        {
+            <li class="breadcrumb-item"><a href="@Url.Action("cat", new { lang = ViewContext.RouteData.Values["lang"], id = @m3.CategoryID })">@m3.Name</a></li>
+        }
+        if (m2 != null)
+        {
+            <li class="breadcrumb-item"><a href="@Url.Action("cat", new { lang = ViewContext.RouteData.Values["lang"], id = @m2.CategoryID })">@m2.Name</a></li>
+        }
+        if (m1 != null)
+        {
+            <li class="breadcrumb-item"><a href="@Url.Action("cat", new { lang = ViewContext.RouteData.Values["lang"], id = @m1.CategoryID })">@m1.Name</a></li>
+        }
+
+        <li class="breadcrumb-item"><a href="@Url.Action("cat", new { lang = ViewContext.RouteData.Values["lang"], id = @category.CategoryID })">@category.Name</a></li>
+
+        if (product != null)
+        {
+            <li class="breadcrumb-item"><a href="@Url.Action("prod", new { lang = ViewContext.RouteData.Values["lang"], id = @product.ID })">@product.Name</a></li>
+        }
+
+            }
+
+        </ol>
+    <!-- End Breadcrumb -->
+    }
+}

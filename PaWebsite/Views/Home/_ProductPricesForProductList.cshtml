@@ -1,0 +1,105 @@
+﻿@using PaWebsite.Resources;
+@using PA.Data.Models.PAX;
+@model Product
+
+@{
+    var product = Model;
+    var shopProducts = ((List<ShopProduct>)ViewBag.ShopProducts).Where(x => x.ProductID == product.ID);
+
+    var colors = (List<int>)ViewBag.SelectedColors;
+
+    if (colors.Count > 0)
+    {
+        shopProducts = shopProducts.Where(x => x.ColorID != null && colors.Contains((int)x.ColorID)).ToList();
+    }
+}
+
+
+@*<a href="#" class="compare-button"><span class="icon"><i class="fa fa-exchange" aria-hidden="true"></i></span><span class="text">@Resurs.AddToCompare</span></a>
+    <a href="#" class="wishlist-button"><span class="icon"><i class="fa fa-heart-o" aria-hidden="true"></i></span><span class="text">@Resurs.AddToWishlist</span></a>*@
+<style type="text/css">
+    .tbl_prod {
+        width: 100%;
+        right: 10px;
+        vertical-align: middle;
+    }
+
+        .tbl_prod tr td {
+            padding-left: 5px;
+        }
+
+        .tbl_prod tr {
+            border-bottom: 1px dashed #f5ecec;
+        }
+
+            .tbl_prod tr:hover, .a_prod_link {
+                background-color: #e5534c;
+                color: #ffffff;
+            }
+
+    .a_prod_link {
+        display: normal;
+        border: 0px !important;
+        padding: 0px !important;
+        margin: 0px !important;
+        display: inherit !important;
+        background-color: transparent !important;
+    }
+
+        .a_prod_link:hover {
+            display: inherit !important;
+            color: #ffffff;
+            /* background-color:#e5534c !important;*/
+        }
+
+    .inner {
+        padding-top: 0px !important;
+        vertical-align: middle !important;
+        top: auto !important;
+        bottom: auto !important;
+    }
+
+    .lnk_prod {
+        cursor: pointer;
+    }
+</style>
+
+
+
+<table class="tbl_prod">
+
+    @{
+        foreach (var prod in shopProducts)
+        {
+            var shop = ((List<Shop>)ViewBag.Global_Shops).First(x => x.ShopID == prod.ShopID);
+            string color = "", hexColor = "";
+            if (prod.ColorID != null && prod.ColorID != 0)
+            {
+                color = ((List<Color>)ViewBag.Global_Colors).First(x => x.ColorID == (int)prod.ColorID).Name;
+                hexColor = ((List<Color>)ViewBag.Global_Colors).First(x => x.ColorID == (int)prod.ColorID).HexCode;
+            }
+
+
+            <tr class="lnk_prod" data-prod-link="@Url.Action("go", new { lang = ViewContext.RouteData.Values["lang"], id = prod.ID })">
+                <td style="text-align:left;">@shop.Name</td>
+                <td style="width:15px;">
+                    @if (!string.IsNullOrEmpty(color))
+                    {
+                        @*<span style="color:@hexColor">@color &nbsp;</span>*@
+                        <span class="icon">
+                            <i class="fa fa-square" style="color:@hexColor;border:1px solid #000000;border-radius:2px;background:@hexColor;" aria-hidden="true"></i>
+                        </span>
+                    }
+                </td>
+                <td style="width:30px;text-align:right;">@(prod.Price / 100.0)</td>
+                <td style="width:35px;padding-right:8px;"> <i class="manat">M</i></td>
+            </tr>
+        }
+    }
+
+</table>
+
+
+
+
+
